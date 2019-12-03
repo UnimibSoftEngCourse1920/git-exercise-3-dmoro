@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertGreaterThan;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
@@ -650,8 +651,23 @@ public class AssertionTest {
         assertNotEquals(Float.NaN, Float.NaN, 1f);
     }
     
+    private class StringComparator<T> implements Comparator<T>{
+        
+        public int compare(T o1, T o2) {
+            if(o1 instanceof String && o2 instanceof String) {
+                String s1 = (String) o1;
+                String s2 = (String) o2;
+                return s1.compareTo(s2);
+            }
+            return -1;
+        }
+        
+    } 
     @Test
-    public <T> void greaterThan() { 
-        assertGreaterThan(2, 1, );
+    public <T> void greaterThan() {
+        String s1 = "Pippo";
+        String s2 = "Pluto";
+        StringComparator<String> comp = new StringComparator<String>();
+        assertGreaterThan(s1, s2, comp);        
     }
 }
